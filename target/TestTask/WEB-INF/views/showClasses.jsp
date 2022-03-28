@@ -12,6 +12,16 @@
     <title>Show classes</title>
 </head>
 <body>
+<label>
+    <select name="sorting">
+        <option disabled>Сортировать по:</option>
+        <option onclick="window.location.href = '/classes/sortByYearOfStudy'">Году обучения</option>
+        <option onclick="window.location.href = '/classes/sortByMnemonicCode'">Мнемокоду</option>
+        <option onclick="window.location.href = '/classes/sortByTeacher'">Учителю</option>
+    </select>
+</label>
+
+
 <table>
     <tr>
         <th>Год обучения</th>
@@ -37,14 +47,15 @@
             <td>${myClass.yearOfStudy}</td>
             <td>${myClass.mnemonicCode}</td>
             <td>${myClass.teacher.fullName}</td>
-            <td><input type = "button" value="Посмотреть" onclick="window.location.href = '${getStudentsInClassById}'" ></td>
+            <td><input type="button" value="Посмотреть" onclick="window.location.href = '${getStudentsInClassById}'">
+            </td>
             <td><input type="button" value="Изменить" onclick="window.location.href = '${updateButton}'">
                 <input type="button" value="Удалить" onclick="window.location.href = '${deleteButton}'"></td>
         </tr>
     </c:forEach>
 </table>
 <br>
-<input type = "button" value="Добавить класс" onclick="window.location.href = 'addClass'" />
+<input type="button" value="Добавить класс" onclick="window.location.href = 'addClass'"/>
 <br><br>
 <a href="/">Назад</a>
 </body>

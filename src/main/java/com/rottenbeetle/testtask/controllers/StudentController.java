@@ -1,7 +1,9 @@
 package com.rottenbeetle.testtask.controllers;
 
 import com.rottenbeetle.testtask.entity.Student;
-import com.rottenbeetle.testtask.service.StudentService;
+import com.rottenbeetle.testtask.repo.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +15,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/students")
 public class StudentController {
-    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
+    public StudentController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/")
     public String showStudents(Model model){
-        List<Student> students = studentService.getAllStudents();
+        List<Student> students = studentRepository.findAll();
         model.addAttribute("students",students);
         return "showStudent";
     }
@@ -36,20 +38,20 @@ public class StudentController {
     public String saveStudent(@ModelAttribute("student") Student student,
                               @RequestParam("dateBirth") @DateTimeFormat(pattern="yyyy-MM-dd") Date dateBirth){
         student.setDateBirth(dateBirth);
-        studentService.saveStudent(student);
+        studentRepository.save(student);
         return "redirect:/students/";
     }
 
     @GetMapping("/updateStudent")
     public String updateStudent(@RequestParam Long id,Model model){
-        Student student = studentService.getStudent(id);
+        Student student = studentRepository.findById(id).get();
         model.addAttribute("student",student);
         return "fillingStudent";
     }
 
     @GetMapping("/deleteStudent")
     public String deleteStudent(@RequestParam("studentId")Long id){
-        studentService.deleteStudent(id);
+        studentRepository.deleteById(id);
         return "redirect:/students/";
     }
 }

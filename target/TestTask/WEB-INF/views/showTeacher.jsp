@@ -12,6 +12,7 @@
     <title>Show teachers</title>
 </head>
 <body>
+
 <table>
     <tr>
         <th>Фамилия</th>
