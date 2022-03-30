@@ -15,10 +15,10 @@ public class Class {
     private int yearOfStudy;
     @Column(name = "mnemonicCode")
     private String mnemonicCode;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE})
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "class_id")
     private List<Student> students;
 
@@ -74,6 +74,10 @@ public class Class {
 
     public List<Student> getStudents() {
         return students;
+    }
+
+    public int getSizeStudents(){
+        return students.size();
     }
 
     public void setStudents(List<Student> students) {

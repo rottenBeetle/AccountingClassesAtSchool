@@ -2,11 +2,10 @@ package com.rottenbeetle.testtask.controllers;
 
 import com.rottenbeetle.testtask.entity.Class;
 import com.rottenbeetle.testtask.entity.Teacher;
-import com.rottenbeetle.testtask.repo.ClassRepository;
 import com.rottenbeetle.testtask.repo.StudentRepository;
 import com.rottenbeetle.testtask.repo.TeacherRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.rottenbeetle.testtask.service.ClassService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,20 +16,20 @@ import java.util.List;
 @RequestMapping("/classes")
 public class ClassController {
 
-    private final ClassRepository classRepository;
+    private final ClassService classService;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
 
-    public ClassController(ClassRepository classRepository, TeacherRepository teacherRepository, StudentRepository studentRepository) {
-        this.classRepository = classRepository;
+    public ClassController(ClassService classService, TeacherRepository teacherRepository, StudentRepository studentRepository) {
+        this.classService = classService;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
     }
 
     @GetMapping("/")
     public String showClasses(Model model) {
-        model.addAttribute("classes",classRepository.findAll());
-        return "showClasses";
+        String keyword = null;
+        return findPaginated(1,"yearOfStudy","desc",keyword,model);
     }
 
     @GetMapping("/addClass")
@@ -48,12 +47,12 @@ public class ClassController {
         }
         Teacher teacher = teacherRepository.findById(teacherId).get();
         aClass.setTeacher(teacher);
-        classRepository.save(aClass);
+        classService.saveClass(aClass);
         return "redirect:/classes/";
     }
     @GetMapping("/updateClass")
     public String updateClass(@RequestParam("classId") Long classId, Model model) {
-        Class myClass = classRepository.findById(classId).get();
+        Class myClass = classService.getClassById(classId);
         model.addAttribute("myClass", myClass);
         model.addAttribute("teachers",teacherRepository.findAll());
         model.addAttribute("students",studentRepository.findAll());
@@ -61,29 +60,36 @@ public class ClassController {
     }
     @GetMapping("/deleteClass")
     public String deleteClass(@RequestParam("classId") Long id) {
-        classRepository.deleteById(id);
+        classService.deleteClassById(id);
         return "redirect:/classes/";
     }
 
     @GetMapping("/getStudentsInClassById")
     public String getStudentsInClassById(@RequestParam("classId") Long id,Model model){
-        model.addAttribute("myClass",classRepository.findById(id).get());
+        model.addAttribute("myClass",classService.getClassById(id));
         return "showStudentsInClass";
     }
-    @GetMapping("/sortByYearOfStudy")
-    public String sortByYearOfStudy(){
+
+    // /page/1?sortField=name&sortDir=acs
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                @RequestParam("sortField") String sortField,
+                                @RequestParam("sortDir") String sortDir,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                Model model){
+        int pageSize = 3;
+        Page<Class> page = classService.findPaginated(pageNo,pageSize,sortField,sortDir,keyword);
+        List<Class> classList = page.getContent();
+        model.addAttribute("currentPage",pageNo);
+        model.addAttribute("totalPages",page.getTotalPages());
+        model.addAttribute("totalItems",page.getTotalElements());
+
+        model.addAttribute("sortField",sortField);
+        model.addAttribute("sortDir",sortDir);
+        model.addAttribute("reverseSortDir",sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("keyword",keyword);
+
+        model.addAttribute("classes", classList);
         return "showClasses";
     }
-
-    @GetMapping("/sortByMnemonicCode")
-    public String sortByMnemonicCode(){
-        return "showClasses";
-    }
-
-    @GetMapping("/sortByTeacher")
-    public String sortByTeacher(){
-        return "showClasses";
-    }
-
-
 }

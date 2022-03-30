@@ -60,6 +60,7 @@ public class JPAConfig {
     Properties getHibernateProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.ddl-auto", "update");
+        properties.setProperty("hibernate.show-sql", "true");
         return properties;
     }
 }

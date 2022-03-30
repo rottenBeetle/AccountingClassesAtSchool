@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "teachers")
-public class Teacher {
+public class Teacher{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -107,5 +107,19 @@ public class Teacher {
         String date = dateBirth.toString().substring(0,10);
         return date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Objects.equals(id, teacher.id) && Objects.equals(lastName, teacher.lastName) && Objects.equals(firstName, teacher.firstName) && Objects.equals(patronymic, teacher.patronymic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, lastName, firstName, patronymic);
+    }
+
 
 }
