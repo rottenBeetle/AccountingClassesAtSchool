@@ -5,6 +5,7 @@ import com.rottenbeetle.testtask.entity.Teacher;
 import com.rottenbeetle.testtask.repo.StudentRepository;
 import com.rottenbeetle.testtask.repo.TeacherRepository;
 import com.rottenbeetle.testtask.service.ClassService;
+import com.rottenbeetle.testtask.service.TeacherService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,25 +18,25 @@ import java.util.List;
 public class ClassController {
 
     private final ClassService classService;
-    private final TeacherRepository teacherRepository;
+    private final TeacherService teacherService;
     private final StudentRepository studentRepository;
 
-    public ClassController(ClassService classService, TeacherRepository teacherRepository, StudentRepository studentRepository) {
+    public ClassController(ClassService classService, TeacherService teacherService, StudentRepository studentRepository) {
         this.classService = classService;
-        this.teacherRepository = teacherRepository;
+        this.teacherService = teacherService;
         this.studentRepository = studentRepository;
     }
 
     @GetMapping("/")
     public String showClasses(Model model) {
         String keyword = null;
-        return findPaginated(1,"yearOfStudy","desc",keyword,model);
+        return findPaginated(1,"id","desc",keyword,model);
     }
 
     @GetMapping("/addClass")
     public String addClass(Model model) {
         model.addAttribute("myClass",new Class());
-        model.addAttribute("teachers",teacherRepository.findAll());
+        model.addAttribute("teachers",teacherService.getAllTeachers());
         model.addAttribute("students",studentRepository.findAll());
         return "fillingClass";
     }
@@ -45,7 +46,7 @@ public class ClassController {
         for (Long id: studentId) {
             aClass.addStudentsToClass(studentRepository.findById(id).get());
         }
-        Teacher teacher = teacherRepository.findById(teacherId).get();
+        Teacher teacher = teacherService.getTeacherById(teacherId);
         aClass.setTeacher(teacher);
         classService.saveClass(aClass);
         return "redirect:/classes/";
@@ -54,7 +55,7 @@ public class ClassController {
     public String updateClass(@RequestParam("classId") Long classId, Model model) {
         Class myClass = classService.getClassById(classId);
         model.addAttribute("myClass", myClass);
-        model.addAttribute("teachers",teacherRepository.findAll());
+        model.addAttribute("teachers",teacherService.getAllTeachers());
         model.addAttribute("students",studentRepository.findAll());
         return "fillingClass";
     }
@@ -77,7 +78,7 @@ public class ClassController {
                                 @RequestParam("sortDir") String sortDir,
                                 @RequestParam(value = "keyword", required = false) String keyword,
                                 Model model){
-        int pageSize = 3;
+        int pageSize = 10;
         Page<Class> page = classService.findPaginated(pageNo,pageSize,sortField,sortDir,keyword);
         List<Class> classList = page.getContent();
         model.addAttribute("currentPage",pageNo);

@@ -24,8 +24,8 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public Class saveClass(Class aClass) {
-        return classRepository.save(aClass);
+    public void saveClass(Class aClass) {
+         classRepository.save(aClass);
     }
 
     @Override
@@ -44,6 +44,7 @@ public class ClassServiceImpl implements ClassService{
     public void deleteClassById(Long id) {
         classRepository.deleteById(id);
     }
+
 
     @Override
     public Page<Class> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection,String keyword) {

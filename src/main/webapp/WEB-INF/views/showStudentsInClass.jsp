@@ -1,27 +1,27 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 23.03.2022
-  Time: 0:08
-  To change this template use File | Settings | File Templates.
---%>
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Show students</title>
+    <meta charset="UTF-8">
+    <title>Ученики - ${myClass.mnemonicCode}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Все ученики класса - ${myClass.mnemonicCode}</h1>
-
-<table>
+<br><br>
+<h2 align="center">Ученики класса - ${myClass.mnemonicCode}</h2>
+<div class="container mt-5">
+<table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
     <tr>
-        <th>Фамилия</th>
-        <th>Имя</th>
-        <th>Отчество</th>
-        <th>Дата рождения</th>
-        <th>Пол</th>
+        <th class="th-sm">Фамилия</th>
+        <th class="th-sm">Имя</th>
+        <th class="th-sm">Отчество</th>
+        <th class="th-sm">Дата рождения</th>
+        <th class="th-sm">Пол</th>
     </tr>
+    </thead>
+    <tbody>
     <c:forEach var="student" items="${myClass.students}">
 
         <tr>
@@ -32,8 +32,10 @@
             <td>${student.gender}</td>
         </tr>
     </c:forEach>
+    </tbody>
 </table>
 <br><br>
 <a href="/classes/">Назад</a>
+</div>
 </body>
 </html>

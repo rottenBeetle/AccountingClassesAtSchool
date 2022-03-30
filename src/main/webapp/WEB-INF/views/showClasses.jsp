@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
+<br><br>
+<h2 align="center">Все классы</h2>
 <div class="container mt-5">
-    <input type="button" value="Добавить класс" onclick="window.location.href = 'addClass'"/>
+    <input type="button" value="Добавить класс" onclick="window.location.href = '/classes/addClass'"/>
     <br><br>
     <div class="col-sm-3">
         <form action="/classes/page/1">

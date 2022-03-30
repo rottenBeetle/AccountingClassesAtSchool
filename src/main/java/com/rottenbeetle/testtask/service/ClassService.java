@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ClassService {
     List<Class> getAllClasses();
-    Class saveClass(Class aClass);
+    void saveClass(Class aClass);
     Class getClassById(Long id);
     void deleteClassById(Long id);
     Page<Class> findPaginated(int pageNo, int pageSize,String sortField,String sortDirection,String keyword);
