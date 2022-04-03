@@ -42,9 +42,11 @@
 
             <label for="mainSubject">Основной предмет</label>
             <form:input class="form-control" id="mainSubject" required="required" path="mainSubject"/>
-            <br><br>
-
-            <input class="btn btn-outline-primary" type="submit" value="Добавить">
+            <br>
+            <input class="btn btn-outline-primary" type="submit" value="Добавить">&nbsp;&nbsp;
+            <a href="/teachers/">Назад</a>
+            <br>
+            <br>
         </div>
     </div>
 </form:form>
