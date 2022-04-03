@@ -5,6 +5,7 @@ import com.rottenbeetle.testtask.entity.Teacher;
 import com.rottenbeetle.testtask.repo.StudentRepository;
 import com.rottenbeetle.testtask.repo.TeacherRepository;
 import com.rottenbeetle.testtask.service.ClassService;
+import com.rottenbeetle.testtask.service.StudentService;
 import com.rottenbeetle.testtask.service.TeacherService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,12 @@ public class ClassController {
 
     private final ClassService classService;
     private final TeacherService teacherService;
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
-    public ClassController(ClassService classService, TeacherService teacherService, StudentRepository studentRepository) {
+    public ClassController(ClassService classService, TeacherService teacherService, StudentService studentService) {
         this.classService = classService;
         this.teacherService = teacherService;
-        this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
     @GetMapping("/")
@@ -37,14 +38,14 @@ public class ClassController {
     public String addClass(Model model) {
         model.addAttribute("myClass",new Class());
         model.addAttribute("teachers",teacherService.getAllTeachers());
-        model.addAttribute("students",studentRepository.findAll());
+        model.addAttribute("students",studentService.getAllStudents());
         return "fillingClass";
     }
 
     @PostMapping("/saveClass")
     public String saveClass(@ModelAttribute("myClass") Class aClass, @RequestParam ("teacherId") Long teacherId, @RequestParam ("studentId") List<Long> studentId) {
         for (Long id: studentId) {
-            aClass.addStudentsToClass(studentRepository.findById(id).get());
+            aClass.addStudentsToClass(studentService.getStudentById(id));
         }
         Teacher teacher = teacherService.getTeacherById(teacherId);
         aClass.setTeacher(teacher);
@@ -56,7 +57,7 @@ public class ClassController {
         Class myClass = classService.getClassById(classId);
         model.addAttribute("myClass", myClass);
         model.addAttribute("teachers",teacherService.getAllTeachers());
-        model.addAttribute("students",studentRepository.findAll());
+        model.addAttribute("students",studentService.getAllStudents());
         return "fillingClass";
     }
     @GetMapping("/deleteClass")

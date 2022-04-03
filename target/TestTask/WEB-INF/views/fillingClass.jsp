@@ -16,19 +16,38 @@
     <form:hidden path="id"/>
     <div class="container mt-5">
         <div class="form-group">
+
             <label for="yearOfStudy">Год обучения</label>
-            <form:input class="form-control" id="yearOfStudy" required="required" path="yearOfStudy"
-                        placeholder="2022"/>
+            <form:select class="form-control" id="yearOfStudy" name="yearOfStudy" required="required" path="yearOfStudy">
+                <option value="${2023}">2023</option>
+                <option selected="selected" value="${2022}">2022</option>
+                <option value="${2021}">2021</option>
+                <option value="${2020}">2020</option>
+                <option value="${2019}">2019</option>
+                <option value="${2018}">2018</option>
+                <option value="${2017}">2017</option>
+                <option value="${2016}">2016</option>
+                <option value="${2015}">2015</option>
+                <option value="${2014}">2014</option>
+                <option value="${2013}">2013</option>
+                <option value="${2012}">2012</option>
+                <option value="${2011}">2011</option>
+                <option value="${2010}">2010</option>
+                <option value="${2009}">2009</option>
+                <option value="${2008}">2008</option>
+            </form:select>
             <br><br>
 
             <label for="mnemonicCode">Мнемокод</label>
             <form:input class="form-control" id="mnemonicCode" required="required" path="mnemonicCode"
-                        placeholder="9A"/>
+                        placeholder="9A" pattern="\d{1,2}[A-Za-zА-Яа-я]{1}"/>
             <br><br>
 
             <label for="teacher">Учитель</label>
             <select class="form-control" id="teacher" required="required" name="teacherId">
-                <option value="${myClass.teacher.id}">${myClass.teacher.fullName}</option>
+                <c:if test="${not empty teachers}">
+                    <option value="${myClass.teacher.id}">${myClass.teacher.fullName}</option>
+                </c:if>
                 <c:forEach var="teacher" items="${teachers}">
                     <c:choose>
                         <c:when test="${empty teachers}">
@@ -47,7 +66,7 @@
             <select multiple class="form-control" id="students" required="required" size="6" name="studentId">
                 <c:choose>
                     <c:when test="${empty students}">
-                        <option disabled>Отсутствуют ученики без класса</option>
+                        <option disabled>Отсутствуют ученики</option>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="student" items="${students}">
@@ -65,8 +84,11 @@
             </select>
         </div>
         <br><br>
-        <br><br>
-        <input class="btn btn-outline-primary" type="submit" value="Добавить">
+        <br>
+        <input class="btn btn-outline-primary" type="submit" value="Добавить">&nbsp;&nbsp;
+        <a href="/classes/">Назад</a>
+        <br>
+        <br>
     </div>
 </form:form>
 </body>

@@ -30,7 +30,7 @@ public class Teacher{
     private Gender gender;
     @Column(name = "mainSubject")
     private String mainSubject;
-    @OneToOne(mappedBy = "teacher",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @OneToOne(mappedBy = "teacher",cascade = {CascadeType.DETACH,CascadeType.REFRESH})
     private Class classTeacher;
 
     public Teacher() {

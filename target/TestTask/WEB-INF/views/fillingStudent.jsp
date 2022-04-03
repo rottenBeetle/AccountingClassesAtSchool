@@ -38,8 +38,11 @@
                 <form:option value="FEMALE" label="Женский"/>
                 <form:option value="UNDEFINED" label="Не определен"/>
             </form:select>
-            <br><br>
-            <input class="btn btn-outline-primary" type="submit" value="Добавить">
+            <br>
+            <input class="btn btn-outline-primary" type="submit" value="Добавить">&nbsp;&nbsp;
+            <a href="/students/">Назад</a>
+            <br>
+            <br>
         </div>
     </div>
 </form:form>
