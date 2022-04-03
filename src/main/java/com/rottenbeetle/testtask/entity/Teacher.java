@@ -30,17 +30,28 @@ public class Teacher{
     private Gender gender;
     @Column(name = "mainSubject")
     private String mainSubject;
+    @OneToOne(mappedBy = "teacher",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    private Class classTeacher;
 
     public Teacher() {
     }
 
-    public Teacher(String lastName, String firstName, String patronymic, Date dateBirth, Gender gender, String mainSubject) {
+    public Teacher(String lastName, String firstName, String patronymic, Date dateBirth, Gender gender, String mainSubject, Class classTeacher) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.dateBirth = dateBirth;
         this.gender = gender;
         this.mainSubject = mainSubject;
+        this.classTeacher = classTeacher;
+    }
+
+    public Class getClassTeacher() {
+        return classTeacher;
+    }
+
+    public void setClassTeacher(Class classTeacher) {
+        this.classTeacher = classTeacher;
     }
 
     public String getFullName(){

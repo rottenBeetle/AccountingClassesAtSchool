@@ -6,5 +6,5 @@ CREATE TABLE students(
     dateBirth date,
     gender CHARACTER VARYING(10),
     class_id INTEGER,
-    FOREIGN KEY (class_id) REFERENCES classes(id)
+    FOREIGN KEY (class_id) REFERENCES classes(id) on update cascade
 );

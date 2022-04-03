@@ -3,6 +3,7 @@ package com.rottenbeetle.testtask.controllers;
 import com.rottenbeetle.testtask.entity.Class;
 import com.rottenbeetle.testtask.entity.Teacher;
 import com.rottenbeetle.testtask.repo.TeacherRepository;
+import com.rottenbeetle.testtask.service.ClassService;
 import com.rottenbeetle.testtask.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,11 @@ import java.util.List;
 public class TeacherController {
 
     private final TeacherService teacherService;
+    private final ClassService classService;
 
-    public TeacherController(TeacherService teacherService) {
+    public TeacherController(TeacherService teacherService, ClassService classService) {
         this.teacherService = teacherService;
+        this.classService = classService;
     }
 
     @GetMapping("/")
@@ -52,6 +55,10 @@ public class TeacherController {
     }
     @GetMapping("/deleteTeacher")
     public String deleteClass(@RequestParam("teacherId") Long id) {
+        Teacher teacher = teacherService.getTeacherById(id);
+        Class classTeacher = teacher.getClassTeacher();
+        classTeacher.setTeacher(null);
+        classService.saveClass(classTeacher);
         teacherService.deleteTeacherById(id);
         return "redirect:/teachers/";
     }
